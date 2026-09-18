@@ -8,8 +8,8 @@ create policy tests_public_read on assessment_tests for select using(published o
 create policy questions_staff_only on assessment_questions for select using(is_staff());
 create policy attempts_owner_read on assessment_attempts for select using(student_id=auth.uid() or is_staff());
 create policy answers_owner_read on assessment_answers for select using(is_staff() or exists(select 1 from assessment_attempts a where a.id=attempt_id and a.student_id=auth.uid()));
-create policy tests_staff_manage on assessment_tests for all using(current_role() in ('academic','admin','superadmin')) with check(current_role() in ('academic','admin','superadmin'));
-create policy questions_staff_manage on assessment_questions for all using(current_role() in ('academic','admin','superadmin')) with check(current_role() in ('academic','admin','superadmin'));
+create policy tests_staff_manage on assessment_tests for all using(public.current_role() in ('academic','admin','superadmin')) with check(public.current_role() in ('academic','admin','superadmin'));
+create policy questions_staff_manage on assessment_questions for all using(public.current_role() in ('academic','admin','superadmin')) with check(public.current_role() in ('academic','admin','superadmin'));
 
 insert into assessment_tests(code,language,framework,level,test_type,title,description,duration_minutes,pass_score) values('EN-A1-PLACEMENT','English','CEFR','A1','placement'::assessment_type,'English A1 Placement Test','Penempatan kompetensi English level A1.',15,70);
 insert into assessment_questions(test_id,prompt,options,correct_option,points,sort_order) select id,'Choose the correct greeting for the morning.','["Good morning", "Good night", "Goodbye", "See you yesterday"]'::jsonb,'Good morning',1,1 from assessment_tests where code='EN-A1-PLACEMENT';

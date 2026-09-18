@@ -24,7 +24,7 @@ create table public.announcements(id uuid primary key default gen_random_uuid(),
 create table public.audit_logs(id bigint generated always as identity primary key,actor_id uuid references profiles(id),action text not null,entity_type text not null,entity_id text,metadata jsonb not null default '{}',created_at timestamptz not null default now());
 
 create or replace function public.current_role() returns app_role language sql stable security definer set search_path=public as $$ select role from profiles where id=auth.uid() $$;
-create or replace function public.is_staff() returns boolean language sql stable security definer set search_path=public as $$ select coalesce(current_role() in ('instructor','academic','admin','finance','executive','superadmin'),false) $$;
+create or replace function public.is_staff() returns boolean language sql stable security definer set search_path=public as $$ select coalesce(public.current_role() in ('instructor','academic','admin','finance','executive','superadmin'),false) $$;
 create or replace function public.handle_new_user() returns trigger language plpgsql security definer set search_path=public as $$ begin insert into profiles(id,full_name,email) values(new.id,coalesce(new.raw_user_meta_data->>'full_name','Pengguna'),new.email); return new; end $$;
 create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
 
@@ -32,9 +32,9 @@ alter table profiles enable row level security;alter table applications enable r
 
 create policy profiles_self_read on profiles for select using(id=auth.uid() or is_staff());
 create policy profiles_self_update on profiles for update using(id=auth.uid()) with check(id=auth.uid());
-create policy staff_profiles_manage on profiles for all using(current_role() in ('admin','superadmin')) with check(current_role() in ('admin','superadmin'));
+create policy staff_profiles_manage on profiles for all using(public.current_role() in ('admin','superadmin')) with check(public.current_role() in ('admin','superadmin'));
 create policy programs_public_read on programs for select using(published or is_staff());
-create policy programs_academic_manage on programs for all using(current_role() in ('academic','admin','superadmin')) with check(current_role() in ('academic','admin','superadmin'));
+create policy programs_academic_manage on programs for all using(public.current_role() in ('academic','admin','superadmin')) with check(public.current_role() in ('academic','admin','superadmin'));
 create policy cohorts_enrolled_read on cohorts for select using(is_staff() or exists(select 1 from enrollments e where e.cohort_id=id and e.student_id=auth.uid()));
 create policy cohorts_staff_manage on cohorts for all using(is_staff()) with check(is_staff());
 create policy enrollments_read on enrollments for select using(student_id=auth.uid() or is_staff());
@@ -50,14 +50,14 @@ create policy assignments_read on assignments for select using(is_staff() or exi
 create policy submissions_self on submissions for all using(student_id=auth.uid() or is_staff()) with check(student_id=auth.uid() or is_staff());
 create policy grades_read on grades for select using(is_staff() or exists(select 1 from submissions s where s.id=submission_id and s.student_id=auth.uid()));
 create policy grades_staff_manage on grades for all using(is_staff()) with check(is_staff());
-create policy invoices_read on invoices for select using(student_id=auth.uid() or current_role() in ('finance','admin','executive','superadmin'));
-create policy payments_read on payment_confirmations for select using(student_id=auth.uid() or current_role() in ('finance','admin','executive','superadmin'));
-create policy payments_staff_update on payment_confirmations for update using(current_role() in ('finance','admin','superadmin'));
+create policy invoices_read on invoices for select using(student_id=auth.uid() or public.current_role() in ('finance','admin','executive','superadmin'));
+create policy payments_read on payment_confirmations for select using(student_id=auth.uid() or public.current_role() in ('finance','admin','executive','superadmin'));
+create policy payments_staff_update on payment_confirmations for update using(public.current_role() in ('finance','admin','superadmin'));
 create policy certificates_read on certificates for select using(student_id=auth.uid() or is_staff());
 create policy announcements_read on announcements for select using(is_staff() or cohort_id is null or exists(select 1 from enrollments e where e.cohort_id=cohort_id and e.student_id=auth.uid()));
 create policy applications_staff_only on applications for select using(is_staff());
 create policy applications_staff_update on applications for update using(is_staff()) with check(is_staff());
-create policy audit_staff_read on audit_logs for select using(current_role() in ('admin','executive','superadmin'));
+create policy audit_staff_read on audit_logs for select using(public.current_role() in ('admin','executive','superadmin'));
 
 create index enrollments_student_idx on enrollments(student_id,status);create index sessions_cohort_start_idx on class_sessions(cohort_id,starts_at);create index assignments_cohort_due_idx on assignments(cohort_id,due_at);create index invoices_student_status_idx on invoices(student_id,status);create index applications_status_created_idx on applications(status,created_at desc);
 
