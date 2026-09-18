@@ -1,0 +1,57 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/portal"
+  to = "/portal.html"
+  status = 200
+
+[[redirects]]
+  from = "/internal"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/tests"
+  to = "/tests.html"
+  status = 200
+
+[[redirects]]
+  from = "/payment"
+  to = "/payment.html"
+  status = 200
+
+[[redirects]]
+  from = "/reset-password"
+  to = "/reset-password.html"
+  status = 200
+
+[[redirects]]
+  from = "/verify"
+  to = "/verify.html"
+  status = 200

@@ -1,0 +1,7 @@
+*.zip
+.env
+.env.*
+.DS_Store
+node_modules/
+supabase/seed-assets/english/licensed-reference/
+supabase/seed-assets/japanese/licensed-reference/

@@ -1,0 +1,51 @@
+{
+  "normalization_method": "true-peak normalization; program dynamics and timing preserved",
+  "target_true_peak_dbtp": -1.0,
+  "tolerance_db": 0.05,
+  "files": [
+    {
+      "file": "N4Q1-minus1dBTP.mp3",
+      "source": "N4Q1.mp3",
+      "sha256": "e33ef2d0a84a918527ddfd7f87c062e5572042abb265b3108bce4c7c91395b9c",
+      "duration_seconds": 773.208,
+      "applied_gain_db": -0.71,
+      "integrated_lufs": -13.97,
+      "true_peak_dbtp": -0.98,
+      "sample_rate": 48000,
+      "bitrate_kbps": 192
+    },
+    {
+      "file": "N4Q2-minus1dBTP.mp3",
+      "source": "N4Q2.mp3",
+      "sha256": "d5bca1f02a6a52f24783caea93183d437b7e8b26eb18385ef55d1d7f9414b237",
+      "duration_seconds": 893.184,
+      "applied_gain_db": -0.24,
+      "integrated_lufs": -13.88,
+      "true_peak_dbtp": -0.99,
+      "sample_rate": 48000,
+      "bitrate_kbps": 192
+    },
+    {
+      "file": "N4Q3-minus1dBTP.mp3",
+      "source": "N4Q3.mp3",
+      "sha256": "dea83aad9bd30c39be751e7b5b24ff8c0daba7f67f88c676c102186321b4f2c6",
+      "duration_seconds": 273.048,
+      "applied_gain_db": -0.76,
+      "integrated_lufs": -14.16,
+      "true_peak_dbtp": -0.99,
+      "sample_rate": 48000,
+      "bitrate_kbps": 192
+    },
+    {
+      "file": "N4Q4-minus1dBTP.mp3",
+      "source": "N4Q4.mp3",
+      "sha256": "aed9bbec65c72392f43e73d858c526ce4478fdea600438044217e549456cead1",
+      "duration_seconds": 363.144,
+      "applied_gain_db": -0.65,
+      "integrated_lufs": -14.46,
+      "true_peak_dbtp": -0.98,
+      "sample_rate": 48000,
+      "bitrate_kbps": 192
+    }
+  ]
+}
