@@ -61,3 +61,25 @@ main{background:rgba(255,253,249,.80)}
 @keyframes lombokGlow{from{opacity:.75}to{opacity:1}}
 @media(max-width:700px){.lombok-live-image{inset:-10%;background-position:42% center;animation-duration:38s}.hero{background:rgba(251,247,239,.88)}}
 @media(prefers-reduced-motion:reduce){.lombok-live-image,.lombok-live-shimmer,.lombok-live-sun{animation:none}}
+
+/* V16 — definitive navigation contrast fix across Safari dark appearance */
+.site-header{background:rgba(255,251,244,.98)!important;color:#2b211d!important}
+.site-header .brand,.site-header .brand span,.site-header .brand small{color:#2b211d!important}
+.site-header nav{background:transparent!important;color:#2b211d!important}
+.site-header nav>a:not(.button){color:#342824!important;font-weight:700!important;text-shadow:none!important}
+.site-header nav>a:not(.button):hover,.site-header nav>a:not(.button):focus{color:#8f3040!important}
+.site-header nav>.button{background:#9f3349!important;border-color:#9f3349!important;color:#fff!important}
+.site-header nav>.button:hover,.site-header nav>.button:focus{background:#742432!important;border-color:#742432!important;color:#fff!important}
+.site-header nav>.button-ghost{background:#fffaf2!important;color:#742432!important}
+.menu-button{background:#fffaf2!important;border-color:#8f3040!important;color:#742432!important}
+@media(prefers-color-scheme:dark){
+ body{color:#2b211d!important}
+ .site-header,.site-header nav{background:rgba(255,251,244,.98)!important;color:#2b211d!important}
+ .site-header nav>a:not(.button){color:#342824!important}
+ .site-header nav>.button{background:#9f3349!important;color:#fff!important;border-color:#9f3349!important}
+ .site-header nav>.button-ghost{background:#fffaf2!important;color:#742432!important;border-color:#8f3040!important}
+}
+@media(max-width:900px){
+ .site-header nav,.site-header nav.open{background:#fffaf2!important;border-bottom:1px solid #d9c7ad!important}
+ .site-header nav>a:not(.button){color:#342824!important}
+}
