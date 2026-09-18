@@ -36,7 +36,7 @@ Sebelum itu, antarmuka menandai hasil sebagai latihan/diagnostik dan bukan skor 
 
 ## Deploy
 
-Ikuti `DEPLOYMENT.md` dan jalankan migrasi `001` sampai `014` berurutan. Kredensial tidak disertakan.
+Ikuti `DEPLOYMENT.md` dan jalankan migrasi `001` sampai `015` berurutan. Kredensial tidak disertakan.
 
 ## Kontak
 
