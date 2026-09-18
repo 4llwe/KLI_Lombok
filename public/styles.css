@@ -5,3 +5,59 @@
 .test-section-head{margin:48px 0 20px;padding:24px;border-left:5px solid var(--primary);border-radius:10px;background:var(--accent)}.test-section-head h2,.test-section-head p{margin:0}.test-section-head .eyebrow{margin-bottom:6px}.reading-stimulus{white-space:pre-line;line-height:1.8}.reading-stimulus h3{margin-top:0}.test-question legend{font-weight:700;line-height:1.55}.test-question label{display:block;margin:.65rem 0}
 
 .listening-stimulus{padding:22px;border:1px solid var(--line);border-radius:12px;background:#f7fbfa}.listening-stimulus h3{margin-top:0}.section-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}.section-score-grid article{padding:14px;border:1px solid var(--line);border-radius:10px;background:#fff}.section-score-grid small,.section-score-grid strong,.section-score-grid span{display:block}.section-score-grid strong{font-size:22px;color:var(--primary)}@media(max-width:700px){.section-score-grid{grid-template-columns:1fr}}
+
+
+/* V12 — Lombok 4G: four-gradient, high-contrast visual system */
+[hidden]{display:none!important}
+html{color-scheme:light}
+body{color:#2b211d;background:#fbf7ef url('assets/lombok-4g-background.jpg') center/cover fixed no-repeat}
+main{background:rgba(255,253,249,.91)}
+.site-header{background:rgba(255,251,244,.97);border-bottom-color:#d9c7ad}
+.site-header nav>a:not(.button){color:#43352f;font-weight:700}
+.site-header nav>a:not(.button):hover{color:#8f3040}
+.brand,.brand small{color:#2b211d}
+.menu-button,.button-secondary,.button-ghost{background:#fffaf2;color:#7b2937;border-color:#8f3040}
+.button{background:#963447;border-color:#963447;color:#fff}
+.button:hover{background:#6f2230;border-color:#6f2230}
+.hero{background-image:linear-gradient(90deg,rgba(251,247,239,.98) 0%,rgba(251,247,239,.93) 48%,rgba(251,247,239,.72) 100%),url('assets/lombok-4g-background.jpg');background-size:cover;background-position:center}
+.page-hero{background-image:linear-gradient(90deg,rgba(251,247,239,.97),rgba(251,247,239,.75)),url('assets/lombok-4g-background.jpg');background-size:cover;background-position:center}
+.soft,.enrollment-page{background:rgba(248,239,225,.94)}
+.product-preview,.course,.price,.layers article,form,.report-card,.panel,.section-score-grid article,.listening-stimulus{background:rgba(255,255,255,.97);color:#2b211d;border-color:#ddccb5}
+.preview-head,.progress-card{background:#f3eadc;color:#5f514a}
+.progress-ring:before{background:#fff}
+.lead,.lead-sm,.section-head>p:last-child,.course p,.price p,.layers p{color:#675b54}
+.trust-list,.check-grid span,.course ul,.price ul{color:#405b55}
+.status,.tag{background:#f6e7c4;color:#67212d}
+input,select,textarea{background:#fff;color:#2b211d;border-color:#aa9a88}
+footer{background:linear-gradient(115deg,#2d171c 0%,#642432 52%,#164b49 100%);color:#fff7ea}
+footer a,footer p,footer .brand,footer .brand small{color:#fff7ea}
+@media(max-width:900px){.site-header nav{background:#fffaf2;color:#2b211d}}
+
+/* V13 — high-definition institutional logo */
+.brand-logo{width:72px;height:60px;object-fit:contain;image-rendering:auto;flex:0 0 auto}
+.footer-logo{width:240px;height:auto;image-rendering:auto}
+.nav-wrap{min-height:86px}
+@media(max-width:600px){.brand-logo{width:60px;height:50px}.nav-wrap{min-height:74px}}
+
+/* V14 — user-approved official logo artwork */
+.brand-logo{width:78px;height:64px;object-fit:contain}
+@media(max-width:600px){.brand-logo{width:66px;height:54px}}
+
+/* V15 — living Lombok photographic background */
+html{background:#071018}
+body{background:transparent}
+.lombok-live-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#071018}
+.lombok-live-image{position:absolute;inset:-6%;background:url('assets/lombok-living-hd.jpg') center/cover no-repeat;transform-origin:62% 38%;animation:lombokKenBurns 32s ease-in-out infinite alternate;will-change:transform}
+.lombok-live-sun{position:absolute;inset:0;background:radial-gradient(ellipse 42% 28% at 86% 10%,rgba(255,214,140,.24),transparent 70%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(20,120,140,.11),transparent 70%);animation:lombokGlow 10s ease-in-out infinite alternate}
+.lombok-live-shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 36%,rgba(255,255,255,.07) 48%,rgba(255,236,190,.09) 50%,rgba(255,255,255,.05) 52%,transparent 64%);mix-blend-mode:screen;animation:lombokShimmer 14s ease-in-out infinite}
+.lombok-live-haze{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,18,24,.18),transparent 38%),linear-gradient(to right,rgba(8,24,18,.08),transparent 30%)}
+main,footer,.portal-shell{position:relative;z-index:1}
+main{background:rgba(255,253,249,.80)}
+.hero{background:linear-gradient(90deg,rgba(251,247,239,.96) 0%,rgba(251,247,239,.86) 49%,rgba(251,247,239,.58) 100%)}
+.page-hero{background:linear-gradient(90deg,rgba(251,247,239,.94),rgba(251,247,239,.62))}
+.soft,.enrollment-page{background:rgba(248,239,225,.90)}
+@keyframes lombokKenBurns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.09) translate(-1.8%,-1.2%)}}
+@keyframes lombokShimmer{0%{transform:translateX(-18%);opacity:.25}50%{transform:translateX(12%);opacity:.55}100%{transform:translateX(22%);opacity:.2}}
+@keyframes lombokGlow{from{opacity:.75}to{opacity:1}}
+@media(max-width:700px){.lombok-live-image{inset:-10%;background-position:42% center;animation-duration:38s}.hero{background:rgba(251,247,239,.88)}}
+@media(prefers-reduced-motion:reduce){.lombok-live-image,.lombok-live-shimmer,.lombok-live-sun{animation:none}}

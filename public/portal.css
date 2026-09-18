@@ -783,3 +783,39 @@ th {
 .menu-studio{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);gap:18px;align-items:start}.menu-editor{box-shadow:none}.menu-editor h2{margin:0}.menu-editor .form-intro{margin:-8px 0 4px;color:var(--muted);font-size:14px}.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.menu-checks{display:flex;flex-wrap:wrap;gap:8px 14px;padding:10px 0}.menu-checks label{display:flex;align-items:center;gap:7px;font-weight:500}.menu-checks input{width:18px;min-height:18px;margin:0}.menu-actions{display:flex;gap:10px;align-items:center}.menu-swatch{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--lombok-sea)}.menu-swatch.off{background:#a69a91}.menu-table-actions{display:flex;gap:8px;flex-wrap:wrap}.button-danger{border-color:#a83b45;background:#fff;color:#8f3040}.button-danger:hover{background:#fae9e8}.lombok-caption{color:var(--muted);font-size:13px;margin:-8px 0 18px}.portal-top h1{letter-spacing:-.025em}.portal-top .eyebrow{color:var(--primary)}
 @media(max-width:980px){.menu-studio{grid-template-columns:1fr}}
 @media(max-width:600px){.menu-grid{grid-template-columns:1fr}.menu-actions{align-items:stretch;flex-direction:column}.menu-actions .button{width:100%}}
+
+
+/* V12 — Lombok 4G dashboard surfaces and contrast guarantees */
+.portal-page{color:#2b211d;background:#f8f2e8;color-scheme:light}
+.portal-main{background-image:linear-gradient(rgba(250,246,239,.84),rgba(250,246,239,.91)),url('assets/lombok-4g-background.jpg');background-size:cover;background-position:center;background-attachment:fixed}
+.portal-top{padding:16px 18px;border:1px solid rgba(203,177,139,.72);border-radius:12px;background:rgba(255,253,248,.94);backdrop-filter:blur(8px)}
+.portal-top h1{color:#2b211d}.portal-top .eyebrow{color:#8f3040}
+.portal-side{color:#fff8eb;box-shadow:8px 0 30px rgba(45,23,28,.12)}
+.portal-brand,.portal-brand small,.portal-user,.portal-user small,.portal-user b{color:#fff8eb}
+.portal-nav{color:#f7ead8}
+.portal-nav:hover,.portal-nav.active{background:rgba(255,248,232,.18);box-shadow:inset 4px 0 0 #e4b84d;color:#fff}
+.portal-panel,.metric-grid article{background:rgba(255,255,255,.95);border-color:#ddcdb8;color:#2b211d;backdrop-filter:blur(8px)}
+.portal-panel h2,.portal-panel h3,.metric-grid strong,.panel-head h2{color:#2b211d}
+.portal-panel p,.portal-panel small,.metric-grid small,.metric-grid span,.class-facts small,.lombok-caption,.form-intro{color:#6d6058}
+.portal-page table{color:#2b211d}.portal-page th{color:#6d6058;border-color:#dfcfba}.portal-page td{border-color:#e5d8c7}
+.portal-page input,.portal-page select,.portal-page textarea{background:#fff;color:#2b211d;border-color:#aa9986}
+.portal-page input::placeholder,.portal-page textarea::placeholder{color:#81746c}
+.portal-page .button-secondary{background:#fffaf2;color:#7b2937;border-color:#8f3040}
+.portal-page .security-note{background:#fff4df;color:#70430f;border-color:#dfb66c}
+.portal-page .success-box{background:#e2f2ed;color:#145b55}
+@media(max-width:900px){.portal-main{background-attachment:scroll}.portal-top{background:rgba(255,253,248,.98)}}
+
+/* V13 — crisp high-density logo in dashboard navigation */
+.portal-brand img{width:78px;height:64px;object-fit:contain;image-rendering:auto;flex:0 0 auto}
+@media(max-width:900px){.portal-brand img{width:68px;height:56px}}
+
+/* V14 — light logo plate preserves official artwork on dark navigation */
+.portal-brand img{width:86px;height:70px;padding:4px;border-radius:8px;background:rgba(255,253,248,.96);object-fit:contain}
+@media(max-width:900px){.portal-brand img{width:74px;height:60px}}
+
+/* V15 — dashboard remains readable over the living landscape */
+.portal-page{background:transparent}
+.portal-shell{background:transparent}
+.portal-main{background:linear-gradient(rgba(250,246,239,.78),rgba(250,246,239,.87));background-image:linear-gradient(rgba(250,246,239,.78),rgba(250,246,239,.87))}
+.portal-panel,.metric-grid article{background:rgba(255,255,255,.94)}
+@media(max-width:900px){.portal-main{background:linear-gradient(rgba(250,246,239,.86),rgba(250,246,239,.92))}}
