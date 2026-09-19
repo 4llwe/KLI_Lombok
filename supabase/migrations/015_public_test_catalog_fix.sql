@@ -9,8 +9,8 @@ for select using (published = true or public.is_staff());
 
 grant select on table public.assessment_tests to anon, authenticated;
 
--- Publish any existing catalog tests.
-update public.assessment_tests set published = true where published is distinct from true;
+-- Existing assessments are not bulk-published.
+-- Publish each form only after its academic and operational review.
 
 -- Guarantee at least one working placement test per language.
 insert into public.assessment_tests(code,language,framework,level,test_type,title,description,duration_minutes,pass_score,published)

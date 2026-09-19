@@ -18,9 +18,9 @@ create table if not exists public.testimonials(
 create index if not exists testimonials_status_published_idx on public.testimonials(status,published_at desc);
 alter table public.testimonials enable row level security;
 drop policy if exists testimonials_public_read on public.testimonials;
-create policy testimonials_public_read on public.testimonials for select to anon,authenticated using(status='published' or public.is_internal());
+create policy testimonials_public_read on public.testimonials for select to anon,authenticated using(status='published' or public.is_staff());
 drop policy if exists testimonials_internal_update on public.testimonials;
-create policy testimonials_internal_update on public.testimonials for update to authenticated using(public.is_internal()) with check(public.is_internal());
+create policy testimonials_internal_update on public.testimonials for update to authenticated using(public.is_staff()) with check(public.is_staff());
 grant select on public.testimonials to anon,authenticated;
 grant update on public.testimonials to authenticated;
 
@@ -32,7 +32,7 @@ create table if not exists public.admission_student_links(
 );
 alter table public.admission_student_links enable row level security;
 drop policy if exists admission_links_internal_read on public.admission_student_links;
-create policy admission_links_internal_read on public.admission_student_links for select to authenticated using(public.is_internal());
+create policy admission_links_internal_read on public.admission_student_links for select to authenticated using(public.is_staff());
 grant select on public.admission_student_links to authenticated;
 
 comment on table public.testimonials is 'Verified alumni stories. Public visibility requires staff approval and explicit consent.';
