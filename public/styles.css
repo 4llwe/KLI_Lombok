@@ -29,7 +29,7 @@ main{background:rgba(255,253,249,.91)}
 .trust-list,.check-grid span,.course ul,.price ul{color:#405b55}
 .status,.tag{background:#f6e7c4;color:#67212d}
 input,select,textarea{background:#fff;color:#2b211d;border-color:#aa9a88}
-footer{background:linear-gradient(115deg,#2d171c 0%,#642432 52%,#164b49 100%);color:#fff7ea}
+footer{position:relative;isolation:isolate;overflow:hidden;background:#281419;color:#fff7ea}.footer-living-media{position:absolute;z-index:0;inset:0;overflow:hidden;background:#281419}.footer-living-video{display:block;width:100%;height:100%;object-fit:cover;object-position:center 48%;filter:saturate(.9) contrast(1.03)}.footer-living-shade{position:absolute;inset:0;background:linear-gradient(100deg,rgba(35,16,21,.92) 0%,rgba(69,22,34,.76) 48%,rgba(15,54,52,.8) 100%)}.footer-living-media.video-paused .footer-living-video{opacity:.88}footer>.container{position:relative;z-index:1}
 footer a,footer p,footer .brand,footer .brand small{color:#fff7ea}
 @media(max-width:900px){.site-header nav{background:#fffaf2;color:#2b211d}}
 
@@ -43,24 +43,20 @@ footer a,footer p,footer .brand,footer .brand small{color:#fff7ea}
 .brand-logo{width:78px;height:64px;object-fit:contain}
 @media(max-width:600px){.brand-logo{width:66px;height:54px}}
 
-/* V15 — living Lombok photographic background */
+/* V17 — Lombok living video background */
 html{background:#071018}
 body{background:transparent}
-.lombok-live-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#071018}
-.lombok-live-image{position:absolute;inset:-6%;background:url('assets/lombok-living-hd.jpg') center/cover no-repeat;transform-origin:62% 38%;animation:lombokKenBurns 32s ease-in-out infinite alternate;will-change:transform}
-.lombok-live-sun{position:absolute;inset:0;background:radial-gradient(ellipse 42% 28% at 86% 10%,rgba(255,214,140,.24),transparent 70%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(20,120,140,.11),transparent 70%);animation:lombokGlow 10s ease-in-out infinite alternate}
-.lombok-live-shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 36%,rgba(255,255,255,.07) 48%,rgba(255,236,190,.09) 50%,rgba(255,255,255,.05) 52%,transparent 64%);mix-blend-mode:screen;animation:lombokShimmer 14s ease-in-out infinite}
-.lombok-live-haze{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,18,24,.18),transparent 38%),linear-gradient(to right,rgba(8,24,18,.08),transparent 30%)}
+.lombok-live-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#071018 url('assets/lombok-photo-living-poster.jpg') center/cover no-repeat}
+.lombok-live-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.94) contrast(1.02);transform:scale(1.012)}
+.lombok-live-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,13,17,.05),rgba(6,18,24,.20)),linear-gradient(100deg,rgba(255,249,238,.10),transparent 48%,rgba(8,38,42,.08))}
+.lombok-live-scene.video-paused .lombok-live-video{opacity:0}
 main,footer,.portal-shell{position:relative;z-index:1}
 main{background:rgba(255,253,249,.80)}
 .hero{background:linear-gradient(90deg,rgba(251,247,239,.96) 0%,rgba(251,247,239,.86) 49%,rgba(251,247,239,.58) 100%)}
 .page-hero{background:linear-gradient(90deg,rgba(251,247,239,.94),rgba(251,247,239,.62))}
 .soft,.enrollment-page{background:rgba(248,239,225,.90)}
-@keyframes lombokKenBurns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.09) translate(-1.8%,-1.2%)}}
-@keyframes lombokShimmer{0%{transform:translateX(-18%);opacity:.25}50%{transform:translateX(12%);opacity:.55}100%{transform:translateX(22%);opacity:.2}}
-@keyframes lombokGlow{from{opacity:.75}to{opacity:1}}
-@media(max-width:700px){.lombok-live-image{inset:-10%;background-position:42% center;animation-duration:38s}.hero{background:rgba(251,247,239,.88)}}
-@media(prefers-reduced-motion:reduce){.lombok-live-image,.lombok-live-shimmer,.lombok-live-sun{animation:none}}
+@media(max-width:700px){.lombok-live-video{object-position:48% center}.hero{background:rgba(251,247,239,.88)}}
+@media(prefers-reduced-motion:reduce){.lombok-live-video{opacity:0}}
 
 /* V16 — definitive navigation contrast fix across Safari dark appearance */
 .site-header{background:rgba(255,251,244,.98)!important;color:#2b211d!important}
@@ -83,3 +79,30 @@ main{background:rgba(255,253,249,.80)}
  .site-header nav,.site-header nav.open{background:#fffaf2!important;border-bottom:1px solid #d9c7ad!important}
  .site-header nav>a:not(.button){color:#342824!important}
 }
+
+
+/* V18 — four-language public website switcher */
+.language-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;padding:5px;background:#101b35;border:1px solid rgba(255,255,255,.08);border-radius:28px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.language-switcher button,.language-switcher a{display:grid;place-items:center;min-width:44px;height:38px;padding:0 12px;border:0;border-radius:20px;background:transparent;color:#d9deeb;font:800 14px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;text-decoration:none}
+.language-switcher button:hover,.language-switcher button:focus-visible,.language-switcher a:hover,.language-switcher a:focus-visible{background:#24304d;color:#fff;outline:none}
+.language-switcher button.active,.language-switcher a.active{background:#c80036;color:#fff}
+.nav-wrap:has(.language-switcher) nav{margin-left:12px}
+@media(max-width:900px){.nav-wrap{flex-wrap:wrap}.language-switcher{order:3;width:max-content;margin:8px auto 0}.nav-wrap:has(.language-switcher) nav{margin-left:0;top:100%}}
+@media(max-width:430px){.language-switcher{width:100%;justify-content:center}.language-switcher button,.language-switcher a{flex:0 1 58px}}
+
+/* Restored Lombok homepage background */
+.lombok-main-scene{background:#071018}.lombok-main-bg{position:absolute;inset:-6%;background:url('assets/lombok-web-background-hd.jpg') center/cover no-repeat;transform-origin:62% 38%;animation:lombok-main-kenburns 32s ease-in-out infinite alternate;will-change:transform}.lombok-main-sun{position:absolute;inset:0;background:radial-gradient(ellipse 42% 28% at 86% 10%,rgba(255,214,140,.22),transparent 70%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(20,120,140,.10),transparent 70%);pointer-events:none;animation:lombok-main-glow 10s ease-in-out infinite alternate}.lombok-main-shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 36%,rgba(255,255,255,.07) 48%,rgba(255,236,190,.08) 50%,rgba(255,255,255,.05) 52%,transparent 64%);mix-blend-mode:screen;animation:lombok-main-shimmer 14s ease-in-out infinite;pointer-events:none}.lombok-main-haze{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,18,24,.18),transparent 38%),linear-gradient(to right,rgba(8,24,18,.08),transparent 30%);pointer-events:none}@keyframes lombok-main-kenburns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.09) translate(-1.8%,-1.2%)}}@keyframes lombok-main-shimmer{0%{transform:translateX(-18%);opacity:.25}50%{transform:translateX(12%);opacity:.55}100%{transform:translateX(22%);opacity:.2}}@keyframes lombok-main-glow{from{opacity:.75}to{opacity:1}}@media(prefers-reduced-motion:reduce){.lombok-main-bg,.lombok-main-shimmer,.lombok-main-sun{animation:none}}
+
+/* Shared inspiration menu */
+.inspiration-menu{position:relative}.inspiration-menu summary{display:flex;align-items:center;min-height:44px;cursor:pointer;list-style:none;font-weight:700}.inspiration-menu summary::-webkit-details-marker{display:none}.inspiration-menu summary:after{content:'▾';margin-left:6px;font-size:11px}.inspiration-menu>div{position:absolute;z-index:30;top:calc(100% + 8px);left:50%;display:grid;min-width:210px;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(45,23,28,.16);transform:translateX(-50%)}.inspiration-menu>div a{display:block;padding:11px 13px;border-radius:8px;white-space:nowrap}.inspiration-menu>div a:hover,.inspiration-menu>div a[aria-current="page"]{background:var(--soft);color:var(--primary)}.inspiration-menu:not([open])>div{display:none}@media(max-width:900px){.inspiration-menu{width:100%}.inspiration-menu summary{padding:10px 0}.inspiration-menu>div{position:static;min-width:0;margin:0 0 8px;padding:4px;border:0;box-shadow:none;transform:none}}
+
+/* Consultation-led registration hero */
+.hero-note{max-width:64ch;margin:18px 0 0;color:var(--muted);font-size:16px;line-height:1.7}.enrollment-visual{position:relative;align-self:stretch;min-height:650px;margin:0;border:1px solid rgba(231,218,199,.95);border-radius:22px;overflow:hidden;background:#2d171c;box-shadow:0 28px 80px rgba(45,23,28,.2)}.enrollment-visual:after{content:'';position:absolute;inset:35% 0 0;background:linear-gradient(to bottom,transparent,rgba(25,12,15,.9))}.enrollment-visual img{display:block;width:100%;height:100%;min-height:650px;object-fit:cover}.enrollment-visual figcaption{position:absolute;z-index:2;right:28px;bottom:28px;left:28px;padding:24px;border:1px solid rgba(255,255,255,.24);border-radius:14px;background:rgba(34,18,21,.82);color:#fff;backdrop-filter:blur(10px)}.enrollment-visual figcaption span,.enrollment-visual figcaption strong{display:block}.enrollment-visual figcaption span{margin-bottom:8px;color:#f6e7c4;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.enrollment-visual figcaption strong{font-size:18px;line-height:1.45}.enrollment-visual figcaption a{display:inline-block;margin-top:16px;color:#fff;font-weight:900;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:900px){.enrollment-visual,.enrollment-visual img{min-height:560px}}@media(max-width:700px){.hero-note{font-size:15px}.enrollment-visual,.enrollment-visual img{min-height:470px}.enrollment-visual figcaption{right:16px;bottom:16px;left:16px;padding:18px}.enrollment-visual figcaption strong{font-size:16px}}
+
+/* Public-first homepage components */
+.journey-card{align-self:center;padding:34px;border:1px solid rgba(231,218,199,.95);border-radius:20px;background:rgba(255,255,255,.94);box-shadow:0 24px 70px rgba(45,23,28,.13);backdrop-filter:blur(10px)}.journey-badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:var(--accent);color:var(--primary-dark);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.journey-card h2{margin:18px 0 8px;font-size:clamp(30px,3.4vw,46px);line-height:1.05}.journey-card>p{margin:0;color:var(--muted)}.journey-steps{display:grid;gap:0;margin:26px 0;padding:0;list-style:none}.journey-steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:15px 0;border-top:1px solid var(--line)}.journey-steps li:last-child{border-bottom:1px solid var(--line)}.journey-steps li>span{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--soft);color:var(--primary);font-weight:900}.journey-steps b,.journey-steps small{display:block}.journey-steps small{margin-top:3px;color:var(--muted);font-size:14px}.journey-link{font-weight:800;color:var(--primary)}
+.advantage-cards{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}.advantage-cards article{min-height:270px;padding:30px;border-right:1px solid var(--line)}.advantage-cards article:last-child{border-right:0}.advantage-cards span{color:var(--primary);font-family:Georgia,serif;font-size:34px;font-weight:800}.advantage-cards h3{margin:28px 0 12px;font-size:24px}.advantage-cards p{margin:0;color:var(--muted)}
+.pathway-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:start}.pathway-list{display:grid;gap:12px;margin-top:30px}.pathway-list article{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.pathway-list span{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--primary);color:#fff;font-weight:900}.pathway-list h3{margin:0 0 5px}.pathway-list p{margin:0;color:var(--muted)}.outcome-card{padding:34px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#fff,#faf6ef);box-shadow:var(--shadow)}.outcome-card h3{margin:8px 0 24px;font-size:32px}.outcome-card>a{display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;padding:18px 0;border-top:1px solid var(--line);color:var(--ink)}.outcome-card>a>span{display:grid;place-items:center;width:44px;height:44px;border-radius:10px;background:var(--accent);color:var(--primary-dark);font-weight:900}.outcome-card b,.outcome-card small{display:block}.outcome-card small{margin-top:3px;color:var(--muted)}
+@media(max-width:1000px){.advantage-cards{grid-template-columns:1fr 1fr}.advantage-cards article:nth-child(2){border-right:0}.advantage-cards article:nth-child(-n+2){border-bottom:1px solid var(--line)}.pathway-grid{grid-template-columns:1fr;gap:36px}}
+@media(max-width:700px){.journey-card{padding:24px}.advantage-cards{grid-template-columns:1fr}.advantage-cards article{min-height:auto;border-right:0;border-bottom:1px solid var(--line)!important}.advantage-cards article:last-child{border-bottom:0!important}.outcome-card{padding:24px}.outcome-card>a{grid-template-columns:44px 1fr}.outcome-card>a>div+*{display:none}}
