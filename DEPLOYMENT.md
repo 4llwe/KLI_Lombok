@@ -1,8 +1,8 @@
 # Deployment KLI — Production Checklist
 
 ## 1. Supabase
-Run migrations in filename order, including both `015_*.sql`, then `016_professional_readiness.sql`.
-Confirm the following tables exist: `profiles`, `applications`, `cohorts`, `enrollments`, `site_menu_items`, `testimonials`, and `admission_student_links`.
+Run migrations in filename order, including both `015_*.sql`, then `016_professional_readiness.sql` and `017_security_readiness.sql`.
+Confirm the public `public_testimonials` view and the following tables exist: `profiles`, `applications`, `cohorts`, `enrollments`, `site_menu_items`, `testimonials`, and `admission_student_links`.
 Create and verify private Storage buckets `payment-proofs` and `assessment-responses` using the policies in the migrations.
 
 ## 2. Netlify environment
@@ -24,3 +24,6 @@ Do not publish invented testimonials, tutor identities, scores, accreditations, 
 
 ## 5. Release
 Run `npm run check`, review desktop/mobile captures, deploy to a preview URL, complete the smoke test, then promote the preview to production.
+
+## 6. Staging-only security gate
+Run `npm test` for local regression checks. Then run the role, cross-cohort, private testimonial and blind-rating checks in `STAGING_SECURITY_TESTS.md` on a fresh, isolated Supabase project with synthetic accounts and data. The local checks do not execute SQL or prove RLS works. Do not promote until the complete security, assessment, academic and operational gates are signed off.

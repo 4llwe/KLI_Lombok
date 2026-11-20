@@ -1,6 +1,7 @@
 *.zip
 .env
 .env.*
+!.env.example
 .DS_Store
 node_modules/
 supabase/seed-assets/english/licensed-reference/

@@ -1,0 +1,13 @@
+# Staging security acceptance tests — not evidence of completion
+
+Use a fresh isolated Supabase project, synthetic data, migrations 001–017, and the Netlify preview. Never use production secrets or participants. Execute calls with the actual anon key and individual access tokens, not the service role. Record date, commit, migration versions, actor, request, expected/actual result, and reviewer. Stop on unexpected access.
+
+1. Create active students A and B in different cohorts/programs, a pending/cancelled student, inactive staff, instructor, academic, finance, admin, superadmin, and anonymous session. Ensure the role assignment/bootstrap is performed by a trusted operator.
+2. As A, attempt to update own `role` to `superadmin` and `active` to false: both must fail. Verify A can edit permitted profile fields. Verify only superadmin/service role can change role and only admin/superadmin/service role can change active state. Verify inactive staff cannot use staff policies.
+3. As A, read A's cohort, schedule, assignments, modules, materials, and cohort announcements; attempt B's equivalents. A's authorized rows must be visible, B's must not. Repeat vice versa and for pending/cancelled enrollment. Try submitting to B's assignment: deny. Check legitimate active student submission succeeds.
+4. Create one consented published testimonial and one pending testimonial containing synthetic email and phone. As anon and authenticated student, query `testimonials` and `public_testimonials`: no personal contact, full name, pending, or unconsented row may be exposed. Confirm public view displays consented content and staff moderation still works.
+5. Give one response to two raters. As each rater, verify the other's criteria and score are inaccessible through REST before and after their own submission. Attempt a direct insert to `assessment_ratings`: deny. Confirm the server grading workflow still creates ratings and adjudication behaves as intended.
+6. Confirm public access cannot read answer keys or private buckets; verify owner and role-specific file access, finance segregation, active status, and every service-role-backed endpoint. Test MFA, login/reset, service key secrecy, and logs independently.
+7. Confirm public pages, admission/activation, class access, assessment, payments, testimonial moderation and certificate verification function end-to-end. Check CSP media playback and mobile/accessibility. Run database backup/restore and incident recovery exercises.
+
+These tests cover only part of release readiness. Assessment timing, answer completeness, transactional integrity, audio delivery, psychometrics, legal review, monitoring and full security audit remain required. Never interpret passing this list as academic validation.
