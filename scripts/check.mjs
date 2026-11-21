@@ -6,6 +6,7 @@ const root = new URL('../', import.meta.url).pathname;
 async function walk(dir) {
   const out = [];
   for (const name of await readdir(dir)) {
+    if (name === 'node_modules' || name === '.git') continue;
     const path = join(dir, name);
     (await stat(path)).isDirectory() ? out.push(...await walk(path)) : out.push(path);
   }
