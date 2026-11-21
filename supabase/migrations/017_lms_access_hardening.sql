@@ -61,6 +61,10 @@ create policy learning_read_modules on public.modules for select using (
 -- active enrollment. Preserve the existing staff access until role-specific
 -- policies are designed and validated separately.
 drop policy if exists submissions_self on public.submissions;
+drop policy if exists submissions_owner_read on public.submissions;
+drop policy if exists submissions_staff_manage on public.submissions;
+drop policy if exists submissions_student_insert on public.submissions;
+drop policy if exists submissions_student_update on public.submissions;
 create policy submissions_owner_read on public.submissions for select to authenticated
 using (student_id = auth.uid());
 create policy submissions_staff_manage on public.submissions for all to authenticated
@@ -88,6 +92,10 @@ with check (
 );
 
 drop policy if exists material_progress_self on public.material_progress;
+drop policy if exists material_progress_owner_read on public.material_progress;
+drop policy if exists material_progress_staff_manage on public.material_progress;
+drop policy if exists material_progress_student_insert on public.material_progress;
+drop policy if exists material_progress_student_update on public.material_progress;
 create policy material_progress_owner_read on public.material_progress for select to authenticated
 using (student_id = auth.uid());
 create policy material_progress_staff_manage on public.material_progress for all to authenticated
