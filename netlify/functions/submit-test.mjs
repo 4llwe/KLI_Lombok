@@ -31,6 +31,20 @@ export const handler = async (event) => {
       return json(409, { error: "Waktu pengiriman tes telah berakhir." });
     }
     const completedSeconds = Math.floor(elapsedMs / 1000);
+    const tasks = await serviceRequest(
+      `/rest/v1/assessment_tasks?test_id=eq.${attempts[0].test_id}&published=eq.true&select=id,skill`,
+    );
+    // Files are uploaded into <student>/<attempt>/<task>-<random>.<extension>.
+    // Never use a client-supplied path for another user, attempt, or task.
+    for (const task of tasks) {
+      const filePath = clean(taskResponses[task.id]?.filePath);
+      if (!filePath) continue;
+      const prefix = `${user.id}/${attemptId}/${task.id}-`;
+      const filename = filePath.startsWith(prefix) ? filePath.slice(prefix.length) : "";
+      if (task.skill !== "speaking" || !/^[A-Za-z0-9-]+\.[A-Za-z0-9]+$/.test(filename)) {
+        return json(400, { error: "Lokasi rekaman tidak valid." });
+      }
+    }
     const questions = await serviceRequest(
       `/rest/v1/assessment_questions?test_id=eq.${attempts[0].test_id}&select=id,correct_option,points,assessment_sections(code,title)`,
     );
@@ -64,9 +78,6 @@ export const handler = async (event) => {
       headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
       body: rows,
     });
-    const tasks = await serviceRequest(
-      `/rest/v1/assessment_tasks?test_id=eq.${attempts[0].test_id}&published=eq.true&select=id,skill`,
-    );
     const responseRows = tasks
       .map((t) => {
         const r = taskResponses[t.id] || {};

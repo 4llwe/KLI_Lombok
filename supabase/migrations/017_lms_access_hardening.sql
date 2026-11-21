@@ -56,3 +56,66 @@ create policy learning_read_modules on public.modules for select using (
     where c.program_id = modules.program_id and e.student_id = auth.uid()
   )
 );
+
+-- Students can read their own history, but may write only for a currently
+-- active enrollment. Preserve the existing staff access until role-specific
+-- policies are designed and validated separately.
+drop policy if exists submissions_self on public.submissions;
+create policy submissions_owner_read on public.submissions for select to authenticated
+using (student_id = auth.uid());
+create policy submissions_staff_manage on public.submissions for all to authenticated
+using (public.is_staff()) with check (public.is_staff());
+create policy submissions_student_insert on public.submissions for insert to authenticated
+with check (
+  student_id = auth.uid()
+  and exists (select 1 from public.profiles p where p.id = auth.uid() and p.active)
+  and exists (
+    select 1 from public.assignments a
+    join public.enrollments e on e.cohort_id = a.cohort_id
+    where a.id = submissions.assignment_id and e.student_id = auth.uid() and e.status = 'active'
+  )
+);
+create policy submissions_student_update on public.submissions for update to authenticated
+using (student_id = auth.uid())
+with check (
+  student_id = auth.uid()
+  and exists (select 1 from public.profiles p where p.id = auth.uid() and p.active)
+  and exists (
+    select 1 from public.assignments a
+    join public.enrollments e on e.cohort_id = a.cohort_id
+    where a.id = submissions.assignment_id and e.student_id = auth.uid() and e.status = 'active'
+  )
+);
+
+drop policy if exists material_progress_self on public.material_progress;
+create policy material_progress_owner_read on public.material_progress for select to authenticated
+using (student_id = auth.uid());
+create policy material_progress_staff_manage on public.material_progress for all to authenticated
+using (public.is_staff()) with check (public.is_staff());
+create policy material_progress_student_insert on public.material_progress for insert to authenticated
+with check (
+  student_id = auth.uid()
+  and exists (select 1 from public.profiles p where p.id = auth.uid() and p.active)
+  and exists (
+    select 1 from public.materials m
+    join public.modules mo on mo.id = m.module_id
+    join public.cohorts c on c.program_id = mo.program_id
+    join public.enrollments e on e.cohort_id = c.id
+    where m.id = material_progress.material_id and m.published
+      and e.student_id = auth.uid() and e.status = 'active'
+  )
+);
+create policy material_progress_student_update on public.material_progress for update to authenticated
+using (student_id = auth.uid())
+with check (
+  student_id = auth.uid()
+  and exists (select 1 from public.profiles p where p.id = auth.uid() and p.active)
+  and exists (
+    select 1 from public.materials m
+    join public.modules mo on mo.id = m.module_id
+    join public.cohorts c on c.program_id = mo.program_id
+    join public.enrollments e on e.cohort_id = c.id
+    where m.id = material_progress.material_id and m.published
+      and e.student_id = auth.uid() and e.status = 'active'
+  )
+);

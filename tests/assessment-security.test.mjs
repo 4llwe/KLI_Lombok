@@ -10,7 +10,7 @@ const realFetch = globalThis.fetch;
 after(() => { globalThis.fetch = realFetch; });
 const event = { httpMethod: 'POST', headers: { authorization: 'Bearer example' }, body: JSON.stringify({ attemptId: 'attempt', testId: 'test', answers: {q:'yes'}, completedSeconds: 1 }) };
 const response = (data) => new Response(data === null ? '' : JSON.stringify(data), { status: 200 });
-function installFetch({ active = true, startedAt = new Date(Date.now()-30_000).toISOString(), duration = 1 } = {}) {
+function installFetch({ active = true, startedAt = new Date(Date.now()-30_000).toISOString(), duration = 1, tasks = [] } = {}) {
   const writes = [];
   globalThis.fetch = async (url, opts = {}) => {
     const u = String(url), method = opts.method || 'GET';
@@ -18,7 +18,7 @@ function installFetch({ active = true, startedAt = new Date(Date.now()-30_000).t
     if (u.includes('/rest/v1/profiles?')) return response([{active}]);
     if (u.includes('/rest/v1/assessment_attempts?') && method === 'GET') return response([{id:'attempt', test_id:'test', started_at:startedAt, assessment_tests:{duration_minutes:duration,pass_score:70,review_status:'academic_review',validation_status:'content_ready'}}]);
     if (u.includes('/rest/v1/assessment_questions?')) return response([{id:'q',correct_option:'yes',points:1}]);
-    if (u.includes('/rest/v1/assessment_tasks?')) return response([]);
+    if (u.includes('/rest/v1/assessment_tasks?')) return response(tasks);
     if (method === 'POST' || method === 'PATCH') { writes.push({url:u,method,body:JSON.parse(opts.body)}); return response(null); }
     throw new Error(`Unexpected request: ${method} ${u}`);
   };
@@ -44,4 +44,16 @@ test('valid submission records server time, not client-supplied duration', async
   const writes=installFetch(); const result=await submit(event); assert.equal(result.statusCode,200);
   const attempt=writes.find(x=>x.method==='PATCH'); assert.ok(attempt); assert.ok(attempt.body.completed_seconds >= 29); assert.notEqual(attempt.body.completed_seconds,1);
   assert.equal(JSON.parse(result.body).practiceOnly,true);
+});
+
+test('rejects another user\'s audio path before writing answers', async () => {
+  const writes=installFetch({tasks:[{id:'task1',skill:'speaking'}]});
+  const input={...event,body:JSON.stringify({attemptId:'attempt',taskResponses:{task1:{filePath:'other/attempt/task1-file.webm'}}})};
+  const result=await submit(input); assert.equal(result.statusCode,400); assert.equal(writes.length,0);
+});
+test('accepts a properly scoped audio path', async () => {
+  const writes=installFetch({tasks:[{id:'task1',skill:'speaking'}]});
+  const input={...event,body:JSON.stringify({attemptId:'attempt',taskResponses:{task1:{filePath:'student/attempt/task1-file.webm'}}})};
+  const result=await submit(input); assert.equal(result.statusCode,200);
+  assert.ok(writes.some(x=>x.url.includes('assessment_task_responses')));
 });
