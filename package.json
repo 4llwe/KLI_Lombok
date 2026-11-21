@@ -1,1 +1,17 @@
-{"name":"kli-integrated-management-system","version":"1.0.0","private":true,"type":"module","engines":{"node":">=22"},"scripts":{"check":"node scripts/check.mjs"}}
+{
+  "name": "kli-integrated-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:rls": "node scripts/test-rls.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.17"
+  }
+}
