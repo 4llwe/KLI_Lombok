@@ -26,5 +26,12 @@ await db.exec(`insert into material_progress(material_id,student_id) values('400
 await assert.rejects(db.exec(`insert into material_progress(material_id,student_id) values('40000000-0000-4000-8000-000000000002','${A}')`),/row-level security/);
 await db.exec(`select set_config('request.jwt.claim.sub','${ADMIN}',false); update profiles set active=false where id='${B}'`);
 await assert.rejects(db.exec(`update profiles set role='superadmin' where id='${ADMIN}'`),/Profile privileges/);
-console.log('PASS: migration parsed; access/trigger scenarios passed with PGlite emulation.');
+await db.exec('reset role');
+const stagingTest = await readFile(new URL('./test-supabase-staging-rls.sql', import.meta.url), 'utf8');
+const snapshotQuery = "select (select count(*) from cohorts)::int as cohorts, (select count(*) from enrollments)::int as enrollments, (select count(*) from profiles where role='admin')::int as admins";
+const before = await db.query(snapshotQuery);
+await db.exec(stagingTest);
+const after = await db.query(snapshotQuery);
+assert.deepEqual(after.rows, before.rows, 'staging test must roll back fixture and profile changes');
+console.log('PASS: migration, access checks, and staging-test rollback passed in PGlite emulation.');
 await db.close();
