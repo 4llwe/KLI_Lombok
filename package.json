@@ -9,9 +9,11 @@
   "scripts": {
     "check": "node scripts/check.mjs",
     "test": "node --test tests/*.test.mjs",
-    "test:rls": "node scripts/test-rls.mjs"
+    "test:rls": "node scripts/test-rls.mjs",
+    "test:ui": "node scripts/test-assessment-ui.mjs"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.5.17"
+    "@electric-sql/pglite": "0.5.17",
+    "playwright": "1.63.0"
   }
 }

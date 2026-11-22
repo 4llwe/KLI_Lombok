@@ -53,7 +53,7 @@ export const handler = async (event) => {
     const sectionTotals = {};
     const rows = questions.map((q) => {
       const answer = clean(answers[q.id]),
-        correct = answer === q.correct_option,
+        correct = Boolean(answer) && answer === q.correct_option,
         points = Number(q.points),
         section = Array.isArray(q.assessment_sections)
           ? q.assessment_sections[0]
@@ -88,8 +88,7 @@ export const handler = async (event) => {
           file_path: clean(r.filePath) || null,
           status: "pending_review",
         };
-      })
-      .filter((r) => r.response_text || r.file_path);
+      });
     if (responseRows.length)
       await serviceRequest("/rest/v1/assessment_task_responses", {
         method: "POST",

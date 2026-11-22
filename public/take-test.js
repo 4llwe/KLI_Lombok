@@ -19,7 +19,10 @@ let attempt,
   tasks = [],
   seconds = 0,
   totalSeconds = 0,
-  clock;
+  clock,
+  deadline,
+  timeExpired = false,
+  submitting = false;
 const voiceLang = { English: "en-GB", Japanese: "ja-JP", German: "de-DE" };
 function taskHtml(t) {
   const heading = `${esc(t.skill.toUpperCase())}`;
@@ -68,8 +71,14 @@ async function start() {
     attempt = data.attemptId;
     questions = data.questions;
     tasks = data.tasks || [];
-    seconds = data.test.duration_minutes * 60;
-    totalSeconds = seconds;
+    totalSeconds = data.test.duration_minutes * 60;
+    const serverStart = Date.parse(data.startedAt);
+    const serverNow = Date.parse(data.serverNow);
+    const remainingMs = Number.isFinite(serverStart) && Number.isFinite(serverNow)
+      ? Math.max(0, serverStart + totalSeconds * 1000 - serverNow)
+      : totalSeconds * 1000;
+    deadline = performance.now() + remainingMs;
+    seconds = Math.ceil(remainingMs / 1000);
     intro.innerHTML = `<p class="eyebrow">${esc(data.test.language)} · ${esc(data.test.level)}</p><h1>${esc(data.test.title)}</h1><p>${esc(data.test.description)}</p><div class="listening-instructions"><b>Listening instructions:</b> Read the questions first, check your device volume, and play each part only when ready.</div>${data.practiceOnly ? '<div class="security-note"><b>Practice/academic review mode.</b> Hasil tidak boleh dipakai sebagai keputusan level final sebelum tes disetujui dan divalidasi.</div>' : ""}`;
     form.innerHTML =
       questionsHtml() +
@@ -145,14 +154,20 @@ async function start() {
           b.disabled = true;
         }),
     );
-    clock = setInterval(() => {
-      seconds--;
+    const tick = () => {
+      seconds = Math.max(0, Math.ceil((deadline - performance.now()) / 1000));
       timer.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
-      if (seconds <= 0) {
+      if (seconds <= 0 && !timeExpired) {
+        timeExpired = true;
         clearInterval(clock);
-        form.requestSubmit();
+        // A timed-out attempt must submit partial answers even if required
+        // questions or word counts are incomplete.
+        form.noValidate = true;
+        if (!submitting) form.requestSubmit();
       }
-    }, 1000);
+    };
+    clock = setInterval(tick, 250);
+    tick();
   } catch (error) {
     intro.innerHTML = `<div class="security-note">${esc(error.message)}</div>`;
     timer.textContent = "Tidak tersedia";
@@ -160,7 +175,8 @@ async function start() {
 }
 form.onsubmit = async (event) => {
   event.preventDefault();
-  for (const area of form.querySelectorAll("textarea[data-minwords]")) {
+  if (submitting) return;
+  for (const area of timeExpired ? [] : form.querySelectorAll("textarea[data-minwords]")) {
     const count = area.value.trim().split(/\s+/).filter(Boolean).length;
     if (
       count < Number(area.dataset.minwords) ||
@@ -171,7 +187,7 @@ form.onsubmit = async (event) => {
       return;
     }
   }
-  clearInterval(clock);
+  submitting = true;
   const button = form.querySelector("button[type=submit]");
   button.disabled = true;
   result.textContent = "Mengunggah dan menyimpan jawaban…";
@@ -179,14 +195,18 @@ form.onsubmit = async (event) => {
     const raw = new FormData(form),
       answers = {},
       taskResponses = {};
+    let omittedAudio = false;
     questions.forEach((q) => (answers[q.id] = raw.get(q.id)));
     for (const t of tasks) {
       if (t.skill === "speaking") {
         const file = raw.get(`file-${t.id}`);
-        if (!(file instanceof File) || !file.size || file.size > 15728640)
-          throw new Error(
-            "Rekaman speaking wajib diunggah dan maksimal 15 MB.",
-          );
+        if (!(file instanceof File) || !file.size || file.size > 15728640) {
+          if (timeExpired) {
+            omittedAudio = true;
+            continue;
+          }
+          throw new Error("Rekaman speaking wajib diunggah dan maksimal 15 MB.");
+        }
         const ext = (file.name.split(".").pop() || "webm")
             .replace(/[^a-z0-9]/gi, "")
             .toLowerCase(),
@@ -205,10 +225,12 @@ form.onsubmit = async (event) => {
       },
       true,
     );
+    clearInterval(clock);
     form.hidden = true;
-    result.innerHTML = `<article class="verification-card valid"><div class="verification-head"><span>✓</span><div><small>Objective score</small><h2>${esc(data.objectiveScore)}%</h2></div></div><p>${esc(data.message)}</p>${data.sectionScores?.length ? `<div class="section-score-grid">${data.sectionScores.map((s) => `<article><small>${esc(s.title)}</small><strong>${esc(s.score)}%</strong><span>${esc(s.earned)}/${esc(s.max)}</span></article>`).join("")}</div>` : ""}${data.practiceOnly ? "<p><b>Hasil latihan:</b> bukan penetapan level atau sertifikat.</p>" : ""}<a class="button" href="portal.html">Kembali ke portal</a></article>`;
+    result.innerHTML = `<article class="verification-card valid"><div class="verification-head"><span>✓</span><div><small>Objective score</small><h2>${esc(data.objectiveScore)}%</h2></div></div><p>${esc(data.message)}</p>${omittedAudio ? "<p>Rekaman speaking yang kosong atau terlalu besar tidak disertakan.</p>" : ""}${data.sectionScores?.length ? `<div class="section-score-grid">${data.sectionScores.map((s) => `<article><small>${esc(s.title)}</small><strong>${esc(s.score)}%</strong><span>${esc(s.earned)}/${esc(s.max)}</span></article>`).join("")}</div>` : ""}${data.practiceOnly ? "<p><b>Hasil latihan:</b> bukan penetapan level atau sertifikat.</p>" : ""}<a class="button" href="portal.html">Kembali ke portal</a></article>`;
   } catch (error) {
-    result.innerHTML = `<div class="security-note">${esc(error.message)}</div>`;
+    result.innerHTML = `<div class="security-note">${esc(error.message)} Silakan coba kirim kembali.</div>`;
+    submitting = false;
     button.disabled = false;
   }
 };

@@ -65,6 +65,8 @@ export const handler = async (event) => {
       : shuffle(questions);
     return json(201, {
       attemptId: attempts[0].id,
+      startedAt: attempts[0].started_at,
+      serverNow: new Date().toISOString(),
       test: tests[0],
       questions: ordered.map((q) => ({
         ...q,
